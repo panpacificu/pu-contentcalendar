@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Panpacific University Content Planner</title>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="app-shell">
+
+    <header class="app-header">
+      <div class="brand-area">
+        <div class="brand-mark">PU</div>
+
+        <div>
+          <p class="eyebrow">Panpacific University</p>
+          <h1>Content Planner</h1>
+          <p class="subtitle">Strategic Communications Calendar</p>
+        </div>
+      </div>
+
+      <div class="header-card">
+        <p>Today’s Focus</p>
+        <h3>Plan. Schedule. Post.</h3>
+      </div>
+    </header>
+
+    <main class="main-content">
+
+      <section class="topbar">
+        <div>
+          <p class="eyebrow">Monthly Calendar</p>
+          <h2 id="monthTitle">Loading...</h2>
+        </div>
+
+        <div class="month-controls">
+          <button id="prevMonth" class="ghost-btn">← Previous</button>
+          <button id="todayBtn" class="primary-btn">Today</button>
+          <button id="nextMonth" class="ghost-btn">Next →</button>
+        </div>
+      </section>
+
+      <section class="stats-row">
+        <div class="stat-card">
+          <p>Ideas</p>
+          <h3 id="ideaCount">0</h3>
+        </div>
+
+        <div class="stat-card">
+          <p>Scheduled</p>
+          <h3 id="scheduledCount">0</h3>
+        </div>
+
+        <div class="stat-card">
+          <p>Posted</p>
+          <h3 id="postedCount">0</h3>
+        </div>
+
+        <div class="stat-card">
+          <p>Total Posts</p>
+          <h3 id="totalCount">0</h3>
+        </div>
+      </section>
+
+      <section class="legend-panel">
+        <div class="legend-group">
+          <p class="legend-title">Status</p>
+
+          <div class="legend-items">
+            <span><i class="dot idea-dot"></i> Idea</span>
+            <span><i class="dot scheduled-dot"></i> Scheduled</span>
+            <span><i class="dot posted-dot"></i> Posted</span>
+          </div>
+        </div>
+
+        <div class="legend-group">
+          <p class="legend-title">Category</p>
+
+          <div class="legend-items">
+            <span><i class="category-box osc-box"></i> OSC Post</span>
+            <span><i class="category-box request-box"></i> Requests</span>
+            <span><i class="category-box holiday-box"></i> Holidays</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="calendar-panel">
+        <div class="weekdays">
+          <div>Sun</div>
+          <div>Mon</div>
+          <div>Tue</div>
+          <div>Wed</div>
+          <div>Thu</div>
+          <div>Fri</div>
+          <div>Sat</div>
+        </div>
+
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <div class="modal hidden" id="postModal">
+    <div class="modal-card">
+
+      <div class="modal-header">
+        <div>
+          <p class="eyebrow">Manage Calendar Card</p>
+          <h3 id="modalDateLabel">Date</h3>
+        </div>
+
+        <button class="close-btn" id="closeModal" type="button">×</button>
+      </div>
+
+      <form id="postForm">
+        <input type="hidden" id="postId" />
+        <input type="hidden" id="postDate" />
+
+        <label>
+          Title of Post
+          <input
+            type="text"
+            id="postTitle"
+            placeholder="Example: Enrollment Reminder"
+            required
+          />
+        </label>
+
+        <label>
+          Time to Post
+          <input
+            type="time"
+            id="postTime"
+            required
+          />
+        </label>
+
+        <div class="form-row">
+          <label>
+            Category
+            <select id="postCategory">
+              <option value="OSC Post">OSC Post</option>
+              <option value="Requests">Requests</option>
+              <option value="Holidays">Holidays</option>
+            </select>
+          </label>
+
+          <label>
+            Status
+            <select id="postStatus">
+              <option value="Idea">Idea</option>
+              <option value="Scheduled">Scheduled</option>
+              <option value="Posted">Posted</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="delete-btn hidden" id="deletePost">
+            Delete
+          </button>
+
+          <button type="submit" class="save-btn">
+            Save Card
+          </button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

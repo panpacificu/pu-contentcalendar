@@ -367,10 +367,6 @@ function formatDate(date) {
 function normalizeDate(value) {
   if (!value) return "";
 
-  if (value instanceof Date) {
-    return formatDate(value);
-  }
-
   const text = String(value).trim();
 
   if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
@@ -389,22 +385,31 @@ function normalizeDate(value) {
 function normalizeTime(value) {
   if (!value) return "";
 
-  if (value instanceof Date) {
-    const hours = String(value.getHours()).padStart(2, "0");
-    const minutes = String(value.getMinutes()).padStart(2, "0");
-    return `${hours}:${minutes}`;
-  }
-
   const text = String(value).trim();
 
+  // Already in 24-hour HH:mm format
   if (/^\d{2}:\d{2}$/.test(text)) {
     return text;
   }
 
+  // Single digit hour format like 9:00
   if (/^\d{1}:\d{2}$/.test(text)) {
     return `0${text}`;
   }
 
+  // Google Sheets can return time as an ISO date:
+  // Example: 1899-12-30T09:00:00.000Z
+  if (text.includes("T")) {
+    const date = new Date(text);
+
+    if (!isNaN(date.getTime())) {
+      const hours = String(date.getUTCHours()).padStart(2, "0");
+      const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+      return `${hours}:${minutes}`;
+    }
+  }
+
+  // Fallback for parseable time text
   const date = new Date(`1970-01-01T${text}`);
 
   if (!isNaN(date.getTime())) {

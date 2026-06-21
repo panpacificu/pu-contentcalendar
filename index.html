@@ -3,26 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  <meta name="theme-color" content="#0057b8" />
   <title>Panpacific University Content Planner</title>
-
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
   <div class="app-shell">
-
     <header class="app-header">
       <div class="brand-area">
-        <div class="brand-mark">PU</div>
-
+        <div class="brand-mark" aria-hidden="true">PU</div>
         <div>
           <p class="eyebrow">Panpacific University</p>
           <h1>Content Planner</h1>
           <p class="subtitle">Strategic Communications Calendar</p>
         </div>
       </div>
-
       <div class="header-card">
         <p>Today’s Focus</p>
         <h3>Plan. Schedule. Post.</h3>
@@ -30,56 +28,36 @@
     </header>
 
     <main class="main-content">
-
       <section class="topbar">
         <div>
           <p class="eyebrow">Monthly Calendar</p>
           <h2 id="monthTitle">Loading...</h2>
         </div>
-
         <div class="month-controls">
-          <button id="prevMonth" class="ghost-btn">← Previous</button>
-          <button id="todayBtn" class="primary-btn">Today</button>
-          <button id="nextMonth" class="ghost-btn">Next →</button>
+          <button id="prevMonth" class="ghost-btn" type="button">← Previous</button>
+          <button id="todayBtn" class="primary-btn" type="button">Today</button>
+          <button id="nextMonth" class="ghost-btn" type="button">Next →</button>
         </div>
       </section>
 
-      <section class="stats-row">
-        <div class="stat-card">
-          <p>Ideas</p>
-          <h3 id="ideaCount">0</h3>
-        </div>
-
-        <div class="stat-card">
-          <p>Scheduled</p>
-          <h3 id="scheduledCount">0</h3>
-        </div>
-
-        <div class="stat-card">
-          <p>Posted</p>
-          <h3 id="postedCount">0</h3>
-        </div>
-
-        <div class="stat-card">
-          <p>Total Posts</p>
-          <h3 id="totalCount">0</h3>
-        </div>
+      <section class="stats-row" aria-label="Monthly content statistics">
+        <div class="stat-card"><p>Ideas</p><h3 id="ideaCount">0</h3></div>
+        <div class="stat-card"><p>Scheduled</p><h3 id="scheduledCount">0</h3></div>
+        <div class="stat-card"><p>Posted</p><h3 id="postedCount">0</h3></div>
+        <div class="stat-card"><p>Total Posts</p><h3 id="totalCount">0</h3></div>
       </section>
 
       <section class="legend-panel">
         <div class="legend-group">
           <p class="legend-title">Status</p>
-
           <div class="legend-items">
             <span><i class="dot idea-dot"></i> Idea</span>
             <span><i class="dot scheduled-dot"></i> Scheduled</span>
             <span><i class="dot posted-dot"></i> Posted</span>
           </div>
         </div>
-
         <div class="legend-group">
           <p class="legend-title">Category</p>
-
           <div class="legend-items">
             <span><i class="category-box osc-box"></i> OSC Post</span>
             <span><i class="category-box request-box"></i> Requests</span>
@@ -90,32 +68,24 @@
 
       <section class="calendar-panel">
         <div class="weekdays">
-          <div>Sun</div>
-          <div>Mon</div>
-          <div>Tue</div>
-          <div>Wed</div>
-          <div>Thu</div>
-          <div>Fri</div>
-          <div>Sat</div>
+          <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
         </div>
-
         <div class="calendar-grid" id="calendarGrid"></div>
       </section>
-
     </main>
-
   </div>
 
-  <div class="modal hidden" id="postModal">
-    <div class="modal-card">
+  <button id="changelogButton" class="floating-action changelog-action" type="button" aria-label="View changelog" title="View changelog">ⓘ</button>
+  <button id="refreshButton" class="floating-action refresh-action" type="button" aria-label="Refresh planner" title="Refresh planner">↻</button>
 
+  <div class="modal hidden" id="postModal" role="dialog" aria-modal="true" aria-labelledby="modalDateLabel">
+    <div class="modal-card">
       <div class="modal-header">
         <div>
           <p class="eyebrow">Manage Calendar Card</p>
           <h3 id="modalDateLabel">Date</h3>
         </div>
-
-        <button class="close-btn" id="closeModal" type="button">×</button>
+        <button class="close-btn" id="closeModal" type="button" aria-label="Close">×</button>
       </div>
 
       <form id="postForm">
@@ -124,21 +94,12 @@
 
         <label>
           Title of Post
-          <input
-            type="text"
-            id="postTitle"
-            placeholder="Example: Enrollment Reminder"
-            required
-          />
+          <input type="text" id="postTitle" placeholder="Example: Enrollment Reminder" required maxlength="140" />
         </label>
 
         <label>
           Time to Post
-          <input
-            type="time"
-            id="postTime"
-            required
-          />
+          <input type="time" id="postTime" required />
         </label>
 
         <div class="form-row">
@@ -150,7 +111,6 @@
               <option value="Holidays">Holidays</option>
             </select>
           </label>
-
           <label>
             Status
             <select id="postStatus">
@@ -162,19 +122,35 @@
         </div>
 
         <div class="modal-actions">
-          <button type="button" class="delete-btn hidden" id="deletePost">
-            Delete
-          </button>
-
-          <button type="submit" class="save-btn">
-            Save Card
-          </button>
+          <button type="button" class="delete-btn hidden" id="deletePost">Delete</button>
+          <button type="submit" class="save-btn" id="savePostButton">Save Card</button>
         </div>
       </form>
-
     </div>
   </div>
 
+  <div class="modal hidden" id="changelogModal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
+    <div class="modal-card changelog-card">
+      <div class="modal-header">
+        <div>
+          <p class="eyebrow">Website Updates</p>
+          <h3 id="changelogTitle">Change Log</h3>
+        </div>
+        <button class="close-btn" id="closeChangelog" type="button" aria-label="Close">×</button>
+      </div>
+      <div id="changelogContent" class="changelog-content"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <footer class="app-footer">
+    <span>Panpacific University Content Planner</span>
+    <span id="versionText">Version</span>
+    <span id="lastRefreshText">Not refreshed yet</span>
+  </footer>
+
+  <script src="config.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

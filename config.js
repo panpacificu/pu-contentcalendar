@@ -1,7 +1,7 @@
 window.APP_CONFIG = Object.freeze({
   APP_NAME: "Panpacific University Content Planner",
   VERSION: "1.1.2",
-  API_URL: "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE",
+  API_URL: "https://script.google.com/macros/s/AKfycbyO-DiFHcopazE0icyj3ETSscI8bA84E-ybMRDqmKbMy0wJjkBavzh3ZyljRSF-XSJ3/exec",
   TIME_ZONE: "Asia/Manila",
   CHANGELOG: [
     {

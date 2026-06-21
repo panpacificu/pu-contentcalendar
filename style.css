@@ -189,54 +189,123 @@ input:focus, select:focus { border-color: rgba(0,87,184,.42); box-shadow: 0 0 0 
   .floating-action { right: 14px; }
   .refresh-action { bottom: 14px; }
   .changelog-action { bottom: 72px; }
+  .floating-datetime { left: 14px; bottom: 14px; min-width: 154px; padding: 10px 12px; }
+  .floating-time { font-size: 14px; }
+  .floating-date { font-size: 11px; }
 }
 
-/* Floating reference clock */
-.floating-clock {
+/* Manual week visibility controls — v1.1.1 */
+.calendar-grid {
+  display: block;
+}
+
+.calendar-week {
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+
+.calendar-week:last-child {
+  border-bottom: 0;
+}
+
+.calendar-week-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.calendar-week .day-cell {
+  border-bottom: 0;
+}
+
+.week-toggle {
+  border: 1px solid rgba(0, 87, 184, .14);
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: var(--pu-blue-dark);
+  background: rgba(255, 255, 255, .92);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+  transition: .16s ease;
+}
+
+.week-toggle:hover {
+  transform: translateY(-1px);
+  background: #eef7ff;
+}
+
+.week-hide-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 8;
+  opacity: .42;
+}
+
+.calendar-week:hover .week-hide-button,
+.week-hide-button:focus-visible {
+  opacity: 1;
+}
+
+.collapsed-week-bar {
+  display: none;
+  min-height: 48px;
+  padding: 10px 14px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: linear-gradient(90deg, rgba(238,247,255,.94), rgba(255,255,255,.96));
+  color: #5c6d86;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.calendar-week.is-collapsed .calendar-week-grid,
+.calendar-week.is-collapsed .week-hide-button {
+  display: none;
+}
+
+.calendar-week.is-collapsed .collapsed-week-bar {
+  display: flex;
+}
+
+@media (max-width: 850px) {
+  .calendar-week-grid {
+    min-width: 980px;
+  }
+
+  .collapsed-week-bar {
+    min-width: 980px;
+  }
+}
+
+
+/* Floating current date and time */
+.floating-datetime {
   position: fixed;
   left: 22px;
   bottom: 22px;
-  z-index: 78;
-  min-width: 205px;
-  display: grid;
-  gap: 2px;
-  padding: 13px 16px;
-  border: 1px solid rgba(0, 87, 184, 0.14);
+  z-index: 80;
+  min-width: 176px;
+  padding: 12px 14px;
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.90);
-  box-shadow: 0 15px 34px rgba(0, 87, 184, 0.15);
+  background: rgba(255,255,255,.92);
+  border: 1px solid rgba(0,87,184,.12);
+  box-shadow: 0 15px 34px rgba(0,87,184,.14);
   backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  pointer-events: none;
-}
-.floating-clock-label {
-  color: var(--pu-blue);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .09em;
-  text-transform: uppercase;
-}
-.floating-clock strong {
-  color: var(--deep-navy);
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -.035em;
-  line-height: 1.2;
-}
-.floating-clock #currentDateText {
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 400;
 }
 
-@media (max-width: 520px) {
-  .floating-clock {
-    left: 14px;
-    bottom: 14px;
-    min-width: 178px;
-    padding: 11px 13px;
-    border-radius: 16px;
-  }
-  .floating-clock strong { font-size: 17px; }
-  .floating-clock #currentDateText { font-size: 11px; }
+.floating-time {
+  color: var(--deep-navy);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -.03em;
+  line-height: 1.1;
+}
+
+.floating-date {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
 }

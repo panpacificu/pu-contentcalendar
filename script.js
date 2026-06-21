@@ -6,6 +6,7 @@ let posts = [];
 let isLoading = false;
 let isSaving = false;
 let toastTimer = null;
+const HIDDEN_WEEKS_STORAGE_KEY = "pu-content-planner-hidden-weeks";
 
 const $ = id => document.getElementById(id);
 const calendarGrid = $("calendarGrid");
@@ -34,17 +35,16 @@ const changelogContent = $("changelogContent");
 const toast = $("toast");
 const versionText = $("versionText");
 const lastRefreshText = $("lastRefreshText");
-const currentTimeText = $("currentTimeText");
-const currentDateText = $("currentDateText");
-let clockTimer = null;
+const floatingTime = $("floatingTime");
+const floatingDate = $("floatingDate");
 
 window.addEventListener("DOMContentLoaded", init);
 
 async function init() {
-  versionText.textContent = `Version ${CONFIG.VERSION || "1.1.1"}`;
+  versionText.textContent = `Version ${CONFIG.VERSION || "1.1.0"}`;
   setupControls();
-  startReferenceClock();
   renderChangelog();
+  startFloatingDateTime();
   await loadPosts();
 }
 
@@ -146,6 +146,7 @@ async function loadPosts(showMessage = false) {
 
 function renderCalendar() {
   updateStats(posts);
+
   const fragment = document.createDocumentFragment();
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -153,50 +154,146 @@ function renderCalendar() {
   const lastDate = new Date(year, month + 1, 0).getDate();
   const prevLastDate = new Date(year, month, 0).getDate();
   const postsByDate = groupPostsByDate(posts);
+  const hiddenWeeks = getHiddenWeeks(year, month);
 
-  for (let i = 0; i < 42; i++) {
-    const cell = document.createElement("div");
-    cell.className = "day-cell";
-    let dayNumber;
-    let cellDate;
-    let isMuted = false;
+  for (let weekIndex = 0; weekIndex < 6; weekIndex++) {
+    const weekWrapper = document.createElement("section");
+    weekWrapper.className = "calendar-week";
+    weekWrapper.dataset.weekIndex = String(weekIndex);
 
-    if (i < startDay) {
-      dayNumber = prevLastDate - startDay + i + 1;
-      cellDate = new Date(year, month - 1, dayNumber);
-      isMuted = true;
-    } else if (i >= startDay + lastDate) {
-      dayNumber = i - (startDay + lastDate) + 1;
-      cellDate = new Date(year, month + 1, dayNumber);
-      isMuted = true;
-    } else {
-      dayNumber = i - startDay + 1;
-      cellDate = new Date(year, month, dayNumber);
+    const weekGrid = document.createElement("div");
+    weekGrid.className = "calendar-week-grid";
+
+    const weekDates = [];
+
+    for (let dayOffset = 0; dayOffset < 7; dayOffset++) {
+      const i = weekIndex * 7 + dayOffset;
+      const cell = document.createElement("div");
+      cell.className = "day-cell";
+
+      let dayNumber;
+      let cellDate;
+      let isMuted = false;
+
+      if (i < startDay) {
+        dayNumber = prevLastDate - startDay + i + 1;
+        cellDate = new Date(year, month - 1, dayNumber);
+        isMuted = true;
+      } else if (i >= startDay + lastDate) {
+        dayNumber = i - (startDay + lastDate) + 1;
+        cellDate = new Date(year, month + 1, dayNumber);
+        isMuted = true;
+      } else {
+        dayNumber = i - startDay + 1;
+        cellDate = new Date(year, month, dayNumber);
+      }
+
+      weekDates.push(cellDate);
+      const dateString = formatDate(cellDate);
+      if (isMuted) cell.classList.add("muted");
+      if (dateString === formatDate(new Date())) cell.classList.add("today");
+
+      const dayNumberEl = document.createElement("div");
+      dayNumberEl.className = "day-number";
+      dayNumberEl.textContent = dayNumber;
+
+      const postList = document.createElement("div");
+      postList.className = "post-list";
+      const dayPosts = (postsByDate.get(dateString) || []).sort(comparePostsByTime);
+      dayPosts.forEach(post => postList.appendChild(createPostCard(post, dateString)));
+
+      const addHint = document.createElement("div");
+      addHint.className = "add-hint";
+      addHint.textContent = "+ Add";
+
+      cell.append(dayNumberEl, postList, addHint);
+      cell.addEventListener("click", () => openPostModal(dateString));
+      weekGrid.appendChild(cell);
     }
 
-    const dateString = formatDate(cellDate);
-    if (isMuted) cell.classList.add("muted");
-    if (dateString === formatDate(new Date())) cell.classList.add("today");
+    const rangeLabel = formatWeekRange(weekDates[0], weekDates[6]);
 
-    const dayNumberEl = document.createElement("div");
-    dayNumberEl.className = "day-number";
-    dayNumberEl.textContent = dayNumber;
+    const hideButton = document.createElement("button");
+    hideButton.type = "button";
+    hideButton.className = "week-toggle week-hide-button";
+    hideButton.textContent = "Hide Week";
+    hideButton.title = `Hide ${rangeLabel}`;
+    hideButton.addEventListener("click", event => {
+      event.stopPropagation();
+      setWeekHidden(year, month, weekIndex, true);
+      renderCalendar();
+    });
 
-    const postList = document.createElement("div");
-    postList.className = "post-list";
-    const dayPosts = (postsByDate.get(dateString) || []).sort(comparePostsByTime);
-    dayPosts.forEach(post => postList.appendChild(createPostCard(post, dateString)));
+    const collapsedBar = document.createElement("div");
+    collapsedBar.className = "collapsed-week-bar";
 
-    const addHint = document.createElement("div");
-    addHint.className = "add-hint";
-    addHint.textContent = "+ Add";
+    const collapsedLabel = document.createElement("span");
+    collapsedLabel.textContent = rangeLabel;
 
-    cell.append(dayNumberEl, postList, addHint);
-    cell.addEventListener("click", () => openPostModal(dateString));
-    fragment.appendChild(cell);
+    const showButton = document.createElement("button");
+    showButton.type = "button";
+    showButton.className = "week-toggle week-show-button";
+    showButton.textContent = "Show Week";
+    showButton.addEventListener("click", event => {
+      event.stopPropagation();
+      setWeekHidden(year, month, weekIndex, false);
+      renderCalendar();
+    });
+
+    collapsedBar.append(collapsedLabel, showButton);
+    weekWrapper.append(weekGrid, hideButton, collapsedBar);
+
+    if (hiddenWeeks.has(weekIndex)) {
+      weekWrapper.classList.add("is-collapsed");
+    }
+
+    fragment.appendChild(weekWrapper);
   }
 
   calendarGrid.replaceChildren(fragment);
+}
+
+function getHiddenWeeks(year, month) {
+  try {
+    const stored = JSON.parse(localStorage.getItem(HIDDEN_WEEKS_STORAGE_KEY) || "{}");
+    const key = `${year}-${String(month + 1).padStart(2, "0")}`;
+    const values = Array.isArray(stored[key]) ? stored[key] : [];
+    return new Set(values.map(Number));
+  } catch (error) {
+    console.warn("Could not read hidden-week preferences.", error);
+    return new Set();
+  }
+}
+
+function setWeekHidden(year, month, weekIndex, hidden) {
+  try {
+    const stored = JSON.parse(localStorage.getItem(HIDDEN_WEEKS_STORAGE_KEY) || "{}");
+    const key = `${year}-${String(month + 1).padStart(2, "0")}`;
+    const values = new Set(Array.isArray(stored[key]) ? stored[key].map(Number) : []);
+
+    if (hidden) values.add(weekIndex);
+    else values.delete(weekIndex);
+
+    stored[key] = [...values].sort((a, b) => a - b);
+    localStorage.setItem(HIDDEN_WEEKS_STORAGE_KEY, JSON.stringify(stored));
+  } catch (error) {
+    console.warn("Could not save hidden-week preferences.", error);
+  }
+}
+
+function formatWeekRange(startDate, endDate) {
+  const sameMonth = startDate.getMonth() === endDate.getMonth();
+  const sameYear = startDate.getFullYear() === endDate.getFullYear();
+
+  if (sameMonth && sameYear) {
+    return `${startDate.toLocaleString("en-US", { month: "short" })} ${startDate.getDate()}–${endDate.getDate()}, ${endDate.getFullYear()}`;
+  }
+
+  if (sameYear) {
+    return `${startDate.toLocaleString("en-US", { month: "short" })} ${startDate.getDate()} – ${endDate.toLocaleString("en-US", { month: "short" })} ${endDate.getDate()}, ${endDate.getFullYear()}`;
+  }
+
+  return `${startDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })} – ${endDate.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`;
 }
 
 function createPostCard(post, dateString) {
@@ -376,6 +473,36 @@ function renderChangelog() {
   changelogContent.replaceChildren(fragment);
 }
 
+function startFloatingDateTime() {
+  updateFloatingDateTime();
+  setInterval(updateFloatingDateTime, 1000);
+}
+
+function updateFloatingDateTime() {
+  const now = new Date();
+  const localeOptions = { timeZone: CONFIG.TIME_ZONE || "Asia/Manila" };
+
+  if (floatingTime) {
+    floatingTime.textContent = new Intl.DateTimeFormat("en-US", {
+      ...localeOptions,
+      hour: "numeric",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true
+    }).format(now);
+  }
+
+  if (floatingDate) {
+    floatingDate.textContent = new Intl.DateTimeFormat("en-US", {
+      ...localeOptions,
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      year: "numeric"
+    }).format(now);
+  }
+}
+
 function showToast(message, isError = false) {
   clearTimeout(toastTimer);
   toast.textContent = message;
@@ -467,36 +594,4 @@ function formatDisplayTime(value) {
   const period = hour >= 12 ? "PM" : "AM";
   hour = hour % 12 || 12;
   return `${hour}:${minute} ${period}`;
-}
-
-
-function startReferenceClock() {
-  updateReferenceClock();
-  clearInterval(clockTimer);
-  clockTimer = setInterval(updateReferenceClock, 1000);
-}
-
-function updateReferenceClock() {
-  const now = new Date();
-  const timeZone = CONFIG.TIME_ZONE || "Asia/Manila";
-
-  if (currentTimeText) {
-    currentTimeText.textContent = new Intl.DateTimeFormat("en-PH", {
-      timeZone,
-      hour: "numeric",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: true
-    }).format(now);
-  }
-
-  if (currentDateText) {
-    currentDateText.textContent = new Intl.DateTimeFormat("en-PH", {
-      timeZone,
-      weekday: "short",
-      month: "short",
-      day: "numeric",
-      year: "numeric"
-    }).format(now);
-  }
 }

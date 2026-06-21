@@ -1,9 +1,16 @@
 # Change Log
 
+## Version 1.1.2 — 2026-06-21
+
+- Restored the floating live current date and time card at the lower-left.
+- Combined the live Manila date/time reference with the manual **Hide Week / Show Week** controls.
+
 ## Version 1.1.1 — 2026-06-21
 
-- Added a floating current Philippine date and time reference at the lower-left.
-- The clock uses the configured `Asia/Manila` time zone and updates live.
+- Added manual **Hide Week** controls for every calendar row.
+- A hidden row becomes a compact week-range bar with a **Show Week** button.
+- Hidden weeks are remembered separately for each month using browser storage.
+- Hiding a week only changes the display; no Google Sheet data is deleted or edited.
 
 ## Version 1.1.0 — 2026-06-21
 

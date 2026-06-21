@@ -75,12 +75,6 @@
     </main>
   </div>
 
-  <aside id="floatingClock" class="floating-clock" aria-label="Current date and time">
-    <span class="floating-clock-label">Philippine Time</span>
-    <strong id="currentTimeText">--:-- --</strong>
-    <span id="currentDateText">Loading date...</span>
-  </aside>
-
   <button id="changelogButton" class="floating-action changelog-action" type="button" aria-label="View changelog" title="View changelog">ⓘ</button>
   <button id="refreshButton" class="floating-action refresh-action" type="button" aria-label="Refresh planner" title="Refresh planner">↻</button>
 
@@ -146,6 +140,12 @@
       </div>
       <div id="changelogContent" class="changelog-content"></div>
     </div>
+  </div>
+
+
+  <div id="floatingDateTime" class="floating-datetime" aria-live="polite">
+    <div id="floatingTime" class="floating-time">--:--:--</div>
+    <div id="floatingDate" class="floating-date">Loading date</div>
   </div>
 
   <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>

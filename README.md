@@ -1,12 +1,10 @@
 # Panpacific University Content Planner
 
-Version 1.1.1
+Version 1.1.2
 
 A lightweight monthly content calendar for Panpacific University, built with HTML, CSS, JavaScript, Google Sheets, and Google Apps Script.
 
 ## Features
-
-- Floating live Philippine date and time reference
 
 - Monthly calendar view
 - Time-based automatic sorting
@@ -15,10 +13,13 @@ A lightweight monthly content calendar for Panpacific University, built with HTM
 - Quick status update icon on every card
 - Floating refresh button
 - Floating changelog button
+- Floating current date and time reference card
 - Duplicate-save protection
 - Google Sheets database
 - Google Apps Script backend
 - GitHub Pages hosting
+- Manual Hide Week / Show Week controls
+- Hidden-week preferences remembered per month
 - Responsive interface
 - Inter typography with lighter weights
 
@@ -66,3 +67,12 @@ The small icon on each calendar card cycles statuses in this order:
 ## Duplicate Save Protection
 
 The Save button disables immediately after being clicked. The backend also uses request tokens, locking, and temporary caching to ignore accidental duplicate submissions.
+
+## Hide or Show a Week
+
+Use the small **Hide Week** button on any calendar row to collapse only that week. A compact bar showing the date range remains visible; select **Show Week** to restore it. This display preference is stored in the browser and does not change or delete any Google Sheet entries.
+
+
+## Live Date and Time
+
+A floating date/time card stays fixed at the lower-left for quick scheduling reference. It uses the configured `Asia/Manila` time zone and updates every second.

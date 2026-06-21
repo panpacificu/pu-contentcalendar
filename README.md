@@ -1,10 +1,12 @@
 # Panpacific University Content Planner
 
-Version 1.1.0
+Version 1.1.1
 
 A lightweight monthly content calendar for Panpacific University, built with HTML, CSS, JavaScript, Google Sheets, and Google Apps Script.
 
 ## Features
+
+- Floating live Philippine date and time reference
 
 - Monthly calendar view
 - Time-based automatic sorting

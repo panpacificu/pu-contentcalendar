@@ -190,3 +190,53 @@ input:focus, select:focus { border-color: rgba(0,87,184,.42); box-shadow: 0 0 0 
   .refresh-action { bottom: 14px; }
   .changelog-action { bottom: 72px; }
 }
+
+/* Floating reference clock */
+.floating-clock {
+  position: fixed;
+  left: 22px;
+  bottom: 22px;
+  z-index: 78;
+  min-width: 205px;
+  display: grid;
+  gap: 2px;
+  padding: 13px 16px;
+  border: 1px solid rgba(0, 87, 184, 0.14);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.90);
+  box-shadow: 0 15px 34px rgba(0, 87, 184, 0.15);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  pointer-events: none;
+}
+.floating-clock-label {
+  color: var(--pu-blue);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.floating-clock strong {
+  color: var(--deep-navy);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -.035em;
+  line-height: 1.2;
+}
+.floating-clock #currentDateText {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+@media (max-width: 520px) {
+  .floating-clock {
+    left: 14px;
+    bottom: 14px;
+    min-width: 178px;
+    padding: 11px 13px;
+    border-radius: 16px;
+  }
+  .floating-clock strong { font-size: 17px; }
+  .floating-clock #currentDateText { font-size: 11px; }
+}

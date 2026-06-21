@@ -34,12 +34,16 @@ const changelogContent = $("changelogContent");
 const toast = $("toast");
 const versionText = $("versionText");
 const lastRefreshText = $("lastRefreshText");
+const currentTimeText = $("currentTimeText");
+const currentDateText = $("currentDateText");
+let clockTimer = null;
 
 window.addEventListener("DOMContentLoaded", init);
 
 async function init() {
-  versionText.textContent = `Version ${CONFIG.VERSION || "1.1.0"}`;
+  versionText.textContent = `Version ${CONFIG.VERSION || "1.1.1"}`;
   setupControls();
+  startReferenceClock();
   renderChangelog();
   await loadPosts();
 }
@@ -463,4 +467,36 @@ function formatDisplayTime(value) {
   const period = hour >= 12 ? "PM" : "AM";
   hour = hour % 12 || 12;
   return `${hour}:${minute} ${period}`;
+}
+
+
+function startReferenceClock() {
+  updateReferenceClock();
+  clearInterval(clockTimer);
+  clockTimer = setInterval(updateReferenceClock, 1000);
+}
+
+function updateReferenceClock() {
+  const now = new Date();
+  const timeZone = CONFIG.TIME_ZONE || "Asia/Manila";
+
+  if (currentTimeText) {
+    currentTimeText.textContent = new Intl.DateTimeFormat("en-PH", {
+      timeZone,
+      hour: "numeric",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true
+    }).format(now);
+  }
+
+  if (currentDateText) {
+    currentDateText.textContent = new Intl.DateTimeFormat("en-PH", {
+      timeZone,
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      year: "numeric"
+    }).format(now);
+  }
 }

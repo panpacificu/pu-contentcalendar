@@ -1,9 +1,16 @@
 window.APP_CONFIG = Object.freeze({
   APP_NAME: "Panpacific University Content Planner",
-  VERSION: "1.1.0",
-  API_URL: "https://script.google.com/macros/s/AKfycbyO-DiFHcopazE0icyj3ETSscI8bA84E-ybMRDqmKbMy0wJjkBavzh3ZyljRSF-XSJ3/exec",
+  VERSION: "1.1.1",
+  API_URL: "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE",
   TIME_ZONE: "Asia/Manila",
   CHANGELOG: [
+    {
+      version: "1.1.1",
+      date: "2026-06-21",
+      changes: [
+        "Added a floating current Philippine date and time reference at the lower-left."
+      ]
+    },
     {
       version: "1.1.0",
       date: "2026-06-21",

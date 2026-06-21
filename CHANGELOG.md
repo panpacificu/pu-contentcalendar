@@ -1,5 +1,10 @@
 # Change Log
 
+## Version 1.1.1 — 2026-06-21
+
+- Added a floating current Philippine date and time reference at the lower-left.
+- The clock uses the configured `Asia/Manila` time zone and updates live.
+
 ## Version 1.1.0 — 2026-06-21
 
 - Improved loading and rendering performance.

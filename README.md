@@ -1,27 +1,24 @@
 # Panpacific University Content Planner
 
-Version 1.1.2
+Version 1.2.0
 
-A lightweight monthly content calendar for Panpacific University, built with HTML, CSS, JavaScript, Google Sheets, and Google Apps Script.
+A lightweight content scheduling planner built with HTML, CSS, JavaScript, Google Sheets, and Google Apps Script.
 
-## Features
+## Main Features
 
-- Monthly calendar view
-- Time-based automatic sorting
-- Categories: OSC Post, Requests, Holidays
-- Statuses: Idea, Scheduled, Posted
-- Quick status update icon on every card
-- Floating refresh button
-- Floating changelog button
-- Floating current date and time reference card
+- Monthly and weekly calendar views
+- Weekly drag-and-drop scheduling
+- Fixed publication slots:
+  - Posters / Photos: 9:00 AM, 12:00 PM, 3:00 PM, 5:00 PM
+  - Videos / Short-form: 10:30 AM, 1:30 PM, 4:30 PM, 7:00 PM
+- Content-type icons and visually separated slot groups
+- Automatic sorting by posting time
+- Quick status cycle: Idea → Scheduled → Posted → Idea
+- Manual Hide Week / Show Week in monthly view
+- Floating refresh, changelog, and live Manila date/time
 - Duplicate-save protection
-- Google Sheets database
-- Google Apps Script backend
-- GitHub Pages hosting
-- Manual Hide Week / Show Week controls
-- Hidden-week preferences remembered per month
-- Responsive interface
-- Inter typography with lighter weights
+- Persistent monthly/weekly view preference
+- Responsive layout and light Inter typography
 
 ## Files
 
@@ -29,50 +26,32 @@ A lightweight monthly content calendar for Panpacific University, built with HTM
 - `style.css`
 - `script.js`
 - `config.js`
+- `README.md`
 - `CHANGELOG.md`
 - `LICENSE`
 - `apps-script/Code.gs`
 
 ## Google Sheet Structure
 
-Use a sheet named `Posts` with these headers in Row 1:
+Use a sheet named `Posts` with these exact headers:
 
 `ID | Date | Time | Title | Category | Status | CreatedAt | UpdatedAt`
 
-Existing rows are preserved as long as you do not delete or overwrite the sheet.
+No new column is required for content type. The app identifies the type based on the selected posting slot.
 
 ## Setup
 
-1. Open `config.js`.
-2. Replace the placeholder API URL with your deployed Apps Script `/exec` URL.
-3. In Google Sheets, open Extensions → Apps Script.
-4. Replace the existing Apps Script code with `apps-script/Code.gs`.
-5. Save and deploy a new Web App version.
-6. Use:
-   - Execute as: Me
-   - Who has access: Anyone
-7. Upload the frontend files to the GitHub repository.
-8. Enable GitHub Pages from the `main` branch and `/root` folder.
+1. Back up the existing Google Sheet.
+2. Upload the frontend files to the GitHub repository.
+3. In `config.js`, retain or paste the deployed Apps Script `/exec` URL.
+4. Replace Apps Script with `apps-script/Code.gs` only when upgrading from a version older than 1.1.0.
+5. Deploy a new Apps Script Web App version if `Code.gs` was changed.
+6. Hard refresh the GitHub Pages website.
 
-## Important Before Updating
+## Drag and Drop
 
-Create a backup copy of the Google Sheet before changing Apps Script or headers. This update does not delete existing values by itself.
+Open Weekly view, then drag a card to any date/time cell. The app saves the new date and time automatically. If the save fails, the card returns to its previous slot.
 
-## Quick Status Button
+## Existing Data
 
-The small icon on each calendar card cycles statuses in this order:
-
-`Idea → Scheduled → Posted → Idea`
-
-## Duplicate Save Protection
-
-The Save button disables immediately after being clicked. The backend also uses request tokens, locking, and temporary caching to ignore accidental duplicate submissions.
-
-## Hide or Show a Week
-
-Use the small **Hide Week** button on any calendar row to collapse only that week. A compact bar showing the date range remains visible; select **Show Week** to restore it. This display preference is stored in the browser and does not change or delete any Google Sheet entries.
-
-
-## Live Date and Time
-
-A floating date/time card stays fixed at the lower-left for quick scheduling reference. It uses the configured `Asia/Manila` time zone and updates every second.
+Existing values are preserved. Older entries using a non-standard time remain visible in Monthly view, but editing them will require selecting one of the approved slots.

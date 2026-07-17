@@ -1,29 +1,19 @@
 # Change Log
 
+## Version 1.2.0 — 2026-07-17
+
+- Added fixed posting slots for posters/photos and videos/short-form content.
+- Replaced manual time typing with a guided content-type and time-slot selector.
+- Added Monthly and Weekly view switching.
+- Added drag-and-drop rescheduling in Weekly view.
+- Added slot type icons, subtle slot-group styling, and occupancy indicators.
+- Added persistent view preference and optimistic drag updates with automatic rollback on errors.
+- Retained Hide Week / Show Week, floating date/time, floating refresh, changelog, quick status controls, and duplicate-save protection.
+
 ## Version 1.1.2 — 2026-06-21
 
-- Restored the floating live current date and time card at the lower-left.
-- Combined the live Manila date/time reference with the manual **Hide Week / Show Week** controls.
-
-## Version 1.1.1 — 2026-06-21
-
-- Added manual **Hide Week** controls for every calendar row.
-- A hidden row becomes a compact week-range bar with a **Show Week** button.
-- Hidden weeks are remembered separately for each month using browser storage.
-- Hiding a week only changes the display; no Google Sheet data is deleted or edited.
+- Combined floating live date/time with manual Hide Week / Show Week controls.
 
 ## Version 1.1.0 — 2026-06-21
 
-- Improved loading and rendering performance.
-- Added floating refresh button.
-- Added floating changelog button and in-app changelog modal.
-- Added quick status update icons on calendar cards.
-- Added frontend and backend duplicate-save protection.
-- Refined Inter typography with lighter font weights.
-- Added `config.js`, `README.md`, `CHANGELOG.md`, and version footer.
-- Improved Apps Script locking and request handling.
-
-## Version 1.0.0 — 2026-06-21
-
-- Initial release.
-- Added monthly calendar, categories, statuses, time sorting, and Google Sheets integration.
+- Added time sorting, quick status controls, duplicate-save protection, floating utilities, versioning, and lighter Inter typography.

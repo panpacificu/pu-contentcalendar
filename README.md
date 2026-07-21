@@ -50,3 +50,7 @@ The import is repeat-safe because it upserts by `legacy_id`.
 - Hold **Shift** while dragging and drop it on another date or time slot to create a copy.
 - Month view keeps the original posting time.
 - Week and Day views adopt the destination time slot.
+
+## v2.0.3 zoom-safe UI
+
+Month and Week cards now remain inside their assigned cells when the browser is zoomed. Narrow layouts use a compact two-row card header and horizontal scrolling for the weekly timetable rather than allowing content to overlap adjacent days.

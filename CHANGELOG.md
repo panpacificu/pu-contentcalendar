@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.3 — 2026-07-21
+- Fixed calendar cards overlapping adjacent columns at browser zoom levels.
+- Added shrink-safe sizing to calendar grid, flex, and card elements.
+- Added compact Month and Week card headers for narrow or zoomed layouts.
+- Kept quick-status buttons and card metadata contained within their assigned slot.
+
 ## 2.0.2 — 2026-07-21
 - Added Shift + Drag duplication across Month, Week, and Day views.
 - Added copy-target visual feedback.

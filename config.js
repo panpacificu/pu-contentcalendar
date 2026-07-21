@@ -1,6 +1,6 @@
 window.PU_PLANNER_CONFIG = Object.freeze({
   APP_NAME: "Panpacific University Content Planner",
-  VERSION: "2.0.2",
+  VERSION: "2.0.3",
 
   // Safe browser credentials from Supabase Project Settings → API.
   // Never place a service_role key here.
@@ -27,6 +27,16 @@ window.PU_PLANNER_CONFIG = Object.freeze({
   PLATFORMS: ["Facebook", "Instagram", "TikTok", "LinkedIn", "YouTube", "Multiple", "General"],
 
   CHANGELOG: [
+    {
+      version: "2.0.3",
+      date: "2026-07-21",
+      changes: [
+        "Fixed calendar cards overlapping adjacent day columns when the browser is zoomed.",
+        "Added zoom-safe grid and flex sizing for Month and Week views.",
+        "Added a compact two-row card header for narrow desktop and high-zoom layouts.",
+        "Kept long titles, platform labels, status controls, and drag actions contained inside each slot."
+      ]
+    },
     {
       version: "2.0.2",
       date: "2026-07-21",

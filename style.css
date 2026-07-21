@@ -74,3 +74,148 @@ button{cursor:pointer}
 .copy-drag-help{margin:10px 2px 0;color:#66758d;font-size:10px;text-align:right}.copy-drag-help kbd{display:inline-grid;place-items:center;min-width:28px;padding:2px 6px;border:1px solid #ccd6e3;border-bottom-width:2px;border-radius:6px;background:#fff;color:#29405f;font:600 9px/1.4 Inter,sans-serif}
 
 .modal-actions-left{display:flex;flex-wrap:wrap;gap:8px}
+
+/* v2.0.3 — zoom-safe calendar cards
+   Keep every card inside its calendar cell at browser zoom levels and on
+   narrow desktop layouts. Grid and flex children use min-width: 0 so long
+   titles, times, platform labels, and quick-action buttons can shrink or wrap
+   instead of forcing the card into the next day column. */
+.main-content,
+.calendar-panel,
+.weekly-panel,
+.daily-panel,
+.weekly-scroll,
+.weekly-grid,
+.weekly-grid > *,
+.calendar-week-grid > *,
+.weekly-slot-cell,
+.day-cell,
+.post-list,
+.post-card,
+.post-card-top,
+.post-card-bottom {
+  min-width: 0;
+}
+
+.post-list {
+  width: 100%;
+  max-width: 100%;
+}
+
+.post-card {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.post-card-top {
+  max-width: 100%;
+  flex-wrap: nowrap;
+}
+
+.content-type-mark {
+  flex: 0 0 18px;
+}
+
+.post-time {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.platform-chip {
+  min-width: 0;
+  max-width: none;
+  flex: 1 1 0;
+}
+
+.post-card h4 {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.status-pill {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.category-label {
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+.quick-status {
+  z-index: 2;
+}
+
+.weekly-slot-cell,
+.day-cell {
+  overflow: hidden;
+}
+
+.weekly-scroll {
+  max-width: 100%;
+  overscroll-behavior-inline: contain;
+  scrollbar-gutter: stable;
+}
+
+/* Compact metadata into two rows when browser zoom reduces the CSS viewport.
+   This preserves time and platform information without horizontal overflow. */
+@media (max-width: 1400px) {
+  .weekly-slot-cell .post-card,
+  .day-cell .post-card {
+    padding: 7px 27px 8px 8px;
+  }
+
+  .weekly-slot-cell .post-card-top,
+  .day-cell .post-card-top {
+    display: grid;
+    grid-template-columns: 18px minmax(0, 1fr);
+    grid-template-areas:
+      "type time"
+      "type platform";
+    column-gap: 5px;
+    row-gap: 2px;
+    align-items: center;
+  }
+
+  .weekly-slot-cell .content-type-mark,
+  .day-cell .content-type-mark {
+    grid-area: type;
+    align-self: start;
+  }
+
+  .weekly-slot-cell .post-time,
+  .day-cell .post-time {
+    grid-area: time;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .weekly-slot-cell .platform-chip,
+  .day-cell .platform-chip {
+    grid-area: platform;
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .weekly-slot-cell .post-card h4,
+  .day-cell .post-card h4 {
+    font-size: 9px;
+    line-height: 1.28;
+  }
+}
+
+@media (max-width: 760px) {
+  .weekly-grid > *,
+  .calendar-week-grid > * {
+    min-width: 0;
+  }
+
+  .weekly-slot-cell .post-card,
+  .day-cell .post-card {
+    border-radius: 10px;
+  }
+}

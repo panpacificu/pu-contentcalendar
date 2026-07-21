@@ -1,57 +1,52 @@
-# Panpacific University Content Planner
+# Panpacific University Content Planner v2.0.2
 
-Version 1.2.0
+## Zero-login shared Supabase edition
 
-A lightweight content scheduling planner built with HTML, CSS, JavaScript, Google Sheets, and Google Apps Script.
+This edition is designed to behave like the previous internal Apps Script planner:
 
-## Main Features
-
-- Monthly and weekly calendar views
-- Weekly drag-and-drop scheduling
-- Fixed publication slots:
-  - Posters / Photos: 9:00 AM, 12:00 PM, 3:00 PM, 5:00 PM
-  - Videos / Short-form: 10:30 AM, 1:30 PM, 4:30 PM, 7:00 PM
-- Content-type icons and visually separated slot groups
-- Automatic sorting by posting time
-- Quick status cycle: Idea → Scheduled → Posted → Idea
-- Manual Hide Week / Show Week in monthly view
-- Floating refresh, changelog, and live Manila date/time
-- Duplicate-save protection
-- Persistent monthly/weekly view preference
-- Responsive layout and light Inter typography
-
-## Files
-
-- `index.html`
-- `style.css`
-- `script.js`
-- `config.js`
-- `README.md`
-- `CHANGELOG.md`
-- `LICENSE`
-- `apps-script/Code.gs`
-
-## Google Sheet Structure
-
-Use a sheet named `Posts` with these exact headers:
-
-`ID | Date | Time | Title | Category | Status | CreatedAt | UpdatedAt`
-
-No new column is required for content type. The app identifies the type based on the selected posting slot.
+- No visible registration or login
+- Anyone who opens the internal URL enters the shared planner automatically
+- Every open browser receives database updates through Supabase Realtime
+- Month, week, and day views
+- Drag-and-drop rescheduling
+- Poster/photo and video time slots
+- Search, filters, workflow statuses, captions, notes, channel management, refresh fallback, and changelog
 
 ## Setup
 
-1. Back up the existing Google Sheet.
-2. Upload the frontend files to the GitHub repository.
-3. In `config.js`, retain or paste the deployed Apps Script `/exec` URL.
-4. Replace Apps Script with `apps-script/Code.gs` only when upgrading from a version older than 1.1.0.
-5. Deploy a new Apps Script Web App version if `Code.gs` was changed.
-6. Hard refresh the GitHub Pages website.
+1. Create a separate Supabase project.
+2. Open **SQL Editor** and run `supabase/schema.sql`.
+3. Open **Authentication** settings and enable **Anonymous Sign-Ins**.
+4. Copy the Supabase Project URL and publishable key into `config.js`.
+5. Upload the project files to GitHub Pages.
+6. Export the current Google Sheet as CSV and use `tools/convert_google_sheet_csv.py` if historical data must be imported.
 
-## Drag and Drop
+No email provider, confirmation message, password reset, Google OAuth, or staff-account setup is required.
 
-Open Weekly view, then drag a card to any date/time cell. The app saves the new date and time automatically. If the save fails, the card returns to its previous slot.
+## How zero-login access works
 
-## Existing Data
+The page silently calls `supabase.auth.signInAnonymously()` the first time it is opened in a browser. Supabase stores that session locally and the database trigger adds it to the shared PU workspace as an Editor. The visitor never sees an account screen.
 
-Existing values are preserved. Older entries using a non-standard time remain visible in Monthly view, but editing them will require selecting one of the approved slots.
+## Important access note
+
+GitHub Pages is publicly reachable. “Internal” in this build means **link-based shared access**, not a private university network. Anyone who obtains the URL can open and edit the planner. Keep the URL limited to authorized staff and do not store confidential or regulated information in it.
+
+For stricter access later, add a university login, VPN/reverse proxy, or a server-side shared access gate.
+
+## Current Google Sheets migration
+
+The `migration/` folder contains the cleaned and validated 146-row migration from the uploaded PU Posts CSV.
+
+Run:
+
+1. `supabase/schema.sql`
+2. `migration/import_current_posts.sql`
+
+The import is repeat-safe because it upserts by `legacy_id`.
+
+## Shift + Drag copy
+
+- Drag a card normally to move it.
+- Hold **Shift** while dragging and drop it on another date or time slot to create a copy.
+- Month view keeps the original posting time.
+- Week and Day views adopt the destination time slot.

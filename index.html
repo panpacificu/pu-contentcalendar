@@ -4,148 +4,302 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0057b8" />
+  <meta name="description" content="Panpacific University Strategic Communications Content Planner." />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
   <title>Panpacific University Content Planner</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app-shell">
-    <header class="app-header">
-      <div class="brand-area">
-        <div class="brand-mark" aria-hidden="true">PU</div>
-        <div>
-          <p class="eyebrow">Panpacific University</p>
-          <h1>Content Planner</h1>
-          <p class="subtitle">Strategic Communications Calendar</p>
-        </div>
-      </div>
-      <div class="header-actions">
-        <div class="view-switch" role="group" aria-label="Calendar view">
-          <button id="monthlyViewBtn" class="view-btn is-active" type="button">Monthly</button>
-          <button id="weeklyViewBtn" class="view-btn" type="button">Weekly</button>
-        </div>
-      </div>
-    </header>
-
-    <main class="main-content">
-      <section class="topbar">
-        <div>
-          <p class="eyebrow" id="viewEyebrow">Monthly Calendar</p>
-          <h2 id="periodTitle">Loading...</h2>
-        </div>
-        <div class="month-controls">
-          <button id="prevPeriod" class="ghost-btn" type="button">← Previous</button>
-          <button id="todayBtn" class="primary-btn" type="button">Today</button>
-          <button id="nextPeriod" class="ghost-btn" type="button">Next →</button>
-        </div>
-      </section>
-
-      <section class="stats-row" aria-label="Content statistics">
-        <div class="stat-card"><p>Ideas</p><h3 id="ideaCount">0</h3></div>
-        <div class="stat-card"><p>Scheduled</p><h3 id="scheduledCount">0</h3></div>
-        <div class="stat-card"><p>Posted</p><h3 id="postedCount">0</h3></div>
-        <div class="stat-card"><p>Total Posts</p><h3 id="totalCount">0</h3></div>
-      </section>
-
-      <section class="slot-guide" aria-label="Posting time slots">
-        <div class="slot-guide-group">
-          <div class="slot-guide-label"><span class="type-icon poster-icon">▧</span><div><strong>Posters / Photos</strong><small>Primary publication slots</small></div></div>
-          <div class="slot-chips" id="posterSlotChips"></div>
-        </div>
-        <div class="slot-guide-group">
-          <div class="slot-guide-label"><span class="type-icon video-icon">▶</span><div><strong>Videos / Short-form</strong><small>Video publication slots</small></div></div>
-          <div class="slot-chips" id="videoSlotChips"></div>
-        </div>
-      </section>
-
-      <section class="legend-panel">
-        <div class="legend-group">
-          <p class="legend-title">Status</p>
-          <div class="legend-items">
-            <span><i class="dot idea-dot"></i> Idea</span>
-            <span><i class="dot scheduled-dot"></i> Scheduled</span>
-            <span><i class="dot posted-dot"></i> Posted</span>
-          </div>
-        </div>
-        <div class="legend-group">
-          <p class="legend-title">Category</p>
-          <div class="legend-items">
-            <span><i class="category-box osc-box"></i> OSC Post</span>
-            <span><i class="category-box request-box"></i> Requests</span>
-            <span><i class="category-box holiday-box"></i> Holidays</span>
-          </div>
-        </div>
-      </section>
-
-      <section id="monthlyPanel" class="calendar-panel">
-        <div class="weekdays">
-          <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-        </div>
-        <div class="calendar-grid" id="calendarGrid"></div>
-      </section>
-
-      <section id="weeklyPanel" class="weekly-panel hidden" aria-label="Weekly time slot planner">
-        <div class="weekly-scroll">
-          <div id="weeklyGrid" class="weekly-grid"></div>
-        </div>
-        <p class="drag-help">Tip: drag any card to another date and time slot. Changes save automatically.</p>
-      </section>
-    </main>
+  <div id="bootScreen" class="boot-screen">
+    <div class="boot-mark">PU</div>
+    <p>Preparing the content planner…</p>
   </div>
 
-  <div id="floatingDateTime" class="floating-datetime" aria-live="polite">
-    <div id="floatingTime" class="floating-time">--:--:--</div>
-    <div id="floatingDate" class="floating-date">Loading date</div>
-  </div>
+  <section id="authScreen" class="auth-screen hidden" aria-label="Content planner account access">
+    <div class="auth-brand-panel">
+      <div class="auth-brand-content">
+        <div class="brand-lockup brand-lockup-light">
+          <div class="brand-mark">PU</div>
+          <div>
+            <p class="eyebrow eyebrow-light">Panpacific University</p>
+            <h1>Content Planner</h1>
+            <p>Strategic Communications Calendar</p>
+          </div>
+        </div>
 
-  <button id="changelogButton" class="floating-action changelog-action" type="button" aria-label="View changelog" title="View changelog">ⓘ</button>
-  <button id="refreshButton" class="floating-action refresh-action" type="button" aria-label="Refresh planner" title="Refresh planner">↻</button>
+        <div class="auth-copy">
+          <p class="eyebrow eyebrow-light">One calendar. One coordinated workflow.</p>
+          <h2>Plan content clearly.<br />Stay aligned daily.</h2>
+          <p>Manage publication slots, move cards across the calendar, and keep every communication item visible to the team.</p>
+        </div>
 
-  <div class="modal hidden" id="postModal" role="dialog" aria-modal="true" aria-labelledby="modalDateLabel">
-    <div class="modal-card">
-      <div class="modal-header">
-        <div><p class="eyebrow">Manage Calendar Card</p><h3 id="modalDateLabel">Date</h3></div>
-        <button class="close-btn" id="closeModal" type="button" aria-label="Close">×</button>
+        <div class="auth-feature-grid">
+          <div><strong>Month, week, and day</strong><span>Move between strategic and detailed planning.</span></div>
+          <div><strong>Realtime synchronization</strong><span>Updates appear across active staff sessions.</span></div>
+          <div><strong>Fixed publication slots</strong><span>Separate poster and video schedules.</span></div>
+          <div><strong>Role-based access</strong><span>Administrators, editors, and viewers.</span></div>
+        </div>
       </div>
-      <form id="postForm">
-        <input type="hidden" id="postId" />
-        <input type="hidden" id="postDate" />
-        <label>Title of Post<input type="text" id="postTitle" placeholder="Example: Enrollment Reminder" required maxlength="140" /></label>
+      <p class="auth-brand-footer">Version <span data-app-version>2.0.2</span> · Zero-login Supabase edition</p>
+    </div>
+
+    <div class="auth-form-panel">
+      <div class="auth-card">
+        <div class="auth-mobile-brand brand-lockup">
+          <div class="brand-mark">PU</div>
+          <div><p class="eyebrow">Panpacific University</p><h1>Content Planner</h1></div>
+        </div>
+
+        <div id="setupNotice" class="setup-notice hidden">
+          <span>⚙</span>
+          <div><strong>Supabase setup required</strong><p>Open <code>config.js</code> and add the project URL and publishable key.</p></div>
+        </div>
+
+        <div id="authDefaultView">
+          <div id="authTabs" class="auth-tabs" role="tablist" aria-label="Account options">
+            <button id="signInTab" class="auth-tab active" type="button" role="tab">Sign in</button>
+            <button id="registerTab" class="auth-tab" type="button" role="tab">Create account</button>
+          </div>
+
+          <form id="signInForm" class="auth-form">
+            <div class="auth-heading">
+              <p class="eyebrow">Staff access</p>
+              <h2>Continue to the planner</h2>
+              <p>Use the account created for your Strategic Communications workspace.</p>
+            </div>
+            <label>Email address<input id="signInEmail" type="email" autocomplete="email" placeholder="name@panpacificu.edu.ph" required /></label>
+            <label>Password
+              <span class="password-field">
+                <input id="signInPassword" type="password" autocomplete="current-password" placeholder="Enter your password" required />
+                <button class="password-toggle" type="button" data-password-target="signInPassword" aria-label="Show password">Show</button>
+              </span>
+            </label>
+            <div class="form-inline-row">
+              <label class="check-label"><input id="rememberEmail" type="checkbox" /> Remember email</label>
+              <button id="forgotPasswordButton" class="text-button" type="button">Forgot password?</button>
+            </div>
+            <button id="signInButton" class="auth-primary-button" type="submit">Sign in</button>
+          </form>
+
+          <form id="registerForm" class="auth-form hidden">
+            <div class="auth-heading">
+              <p class="eyebrow">Create staff access</p>
+              <h2>Join the PU workspace</h2>
+              <p>Self-registration is controlled in <code>config.js</code>. Invite-only access is recommended.</p>
+            </div>
+            <label>Full name<input id="registerName" type="text" autocomplete="name" maxlength="100" required /></label>
+            <label>Email address<input id="registerEmail" type="email" autocomplete="email" required /></label>
+            <label>Password
+              <span class="password-field">
+                <input id="registerPassword" type="password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" required />
+                <button class="password-toggle" type="button" data-password-target="registerPassword" aria-label="Show password">Show</button>
+              </span>
+            </label>
+            <div class="password-meter"><span id="passwordMeterFill"></span></div>
+            <p id="passwordHint" class="field-hint">Use at least 8 characters with letters and numbers.</p>
+            <button id="registerButton" class="auth-primary-button" type="submit">Create account</button>
+          </form>
+        </div>
+
+        <div id="authMessageView" class="auth-message-view hidden">
+          <div id="authMessageIcon" class="message-icon">✓</div>
+          <p id="authMessageEyebrow" class="eyebrow">Check your inbox</p>
+          <h2 id="authMessageTitle">Complete account setup</h2>
+          <p id="authMessageBody">Follow the link sent to your email.</p>
+          <button id="backToSignInButton" class="auth-primary-button" type="button">Back to sign in</button>
+        </div>
+
+        <form id="forgotPasswordForm" class="auth-form hidden">
+          <div class="auth-heading"><p class="eyebrow">Account recovery</p><h2>Reset your password</h2><p>Enter your account email to receive a secure recovery link.</p></div>
+          <label>Email address<input id="forgotEmail" type="email" autocomplete="email" required /></label>
+          <button id="sendResetButton" class="auth-primary-button" type="submit">Send reset link</button>
+          <button id="cancelForgotButton" class="secondary-wide-button" type="button">Back to sign in</button>
+        </form>
+
+        <form id="recoveryForm" class="auth-form hidden">
+          <div class="auth-heading"><p class="eyebrow">Choose a new password</p><h2>Secure your account</h2><p>Enter and confirm your new password.</p></div>
+          <label>New password
+            <span class="password-field"><input id="recoveryPassword" type="password" minlength="8" required /><button class="password-toggle" type="button" data-password-target="recoveryPassword">Show</button></span>
+          </label>
+          <label>Confirm new password<input id="recoveryPasswordConfirm" type="password" minlength="8" required /></label>
+          <button id="updatePasswordButton" class="auth-primary-button" type="submit">Update password</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section id="appScreen" class="app-screen hidden" aria-label="Panpacific University content planner">
+    <div class="app-shell">
+      <header class="app-header">
+        <div class="brand-area">
+          <div class="brand-mark" aria-hidden="true">PU</div>
+          <div><p class="eyebrow">Panpacific University</p><h1>Content Planner</h1><p class="subtitle">Strategic Communications Calendar</p></div>
+        </div>
+        <div class="header-actions">
+          <div class="view-switch" role="group" aria-label="Calendar view">
+            <button id="monthlyViewButton" class="view-btn" type="button">Month</button>
+            <button id="weeklyViewButton" class="view-btn" type="button">Week</button>
+            <button id="dailyViewButton" class="view-btn" type="button">Day</button>
+          </div>
+          <div class="shared-live-badge"><i></i><span><strong>Shared workspace</strong><small>Live updates</small></span></div>
+          <button id="accountButton" class="account-button hidden" type="button" aria-hidden="true" tabindex="-1">
+            <span id="accountAvatar" class="account-avatar">U</span>
+            <span><strong id="accountName">Planner User</strong><small id="accountRole">Editor</small></span>
+            <span>›</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="main-content">
+        <section class="topbar">
+          <div><p class="eyebrow" id="viewEyebrow">Weekly Calendar</p><h2 id="periodTitle">Loading…</h2><p id="activeChannelLabel" class="period-subtitle">All publication channels</p></div>
+          <div class="period-controls">
+            <button id="previousPeriodButton" class="ghost-btn" type="button">← Previous</button>
+            <button id="todayButton" class="primary-btn" type="button">Today</button>
+            <button id="nextPeriodButton" class="ghost-btn" type="button">Next →</button>
+          </div>
+        </section>
+
+        <section class="planner-toolbar" aria-label="Planner search and filters">
+          <label class="search-control"><span>⌕</span><input id="plannerSearch" type="search" placeholder="Search titles, captions, notes…" autocomplete="off" /></label>
+          <select id="channelFilter" class="filter-select" aria-label="Filter by publication channel"><option value="all">All channels</option></select>
+          <select id="statusFilter" class="filter-select" aria-label="Filter by status">
+            <option value="all">All statuses</option><option value="idea">Idea</option><option value="created">Created</option><option value="scheduled">Scheduled</option><option value="posted">Posted</option>
+          </select>
+          <select id="categoryFilter" class="filter-select" aria-label="Filter by category">
+            <option value="all">All categories</option><option value="OSC Post">OSC Post</option><option value="Requests">Requests</option><option value="Holidays">Holidays</option>
+          </select>
+          <button id="manageChannelsButton" class="ghost-btn compact-btn" type="button">Channels</button>
+          <button id="newPostButton" class="new-post-btn" type="button">+ New post</button>
+        </section>
+
+        <section class="stats-row" aria-label="Visible content statistics">
+          <div class="stat-card"><p>Ideas</p><h3 id="ideaCount">0</h3><span>Early concepts</span></div>
+          <div class="stat-card"><p>Created</p><h3 id="createdCount">0</h3><span>Assets prepared</span></div>
+          <div class="stat-card"><p>Scheduled</p><h3 id="scheduledCount">0</h3><span>Ready to publish</span></div>
+          <div class="stat-card"><p>Posted</p><h3 id="postedCount">0</h3><span>Published content</span></div>
+        </section>
+
+        <section class="slot-guide" aria-label="Posting time slots">
+          <div class="slot-guide-group">
+            <div class="slot-guide-label"><span class="type-icon poster-icon">▧</span><div><strong>Posters / Photos</strong><small>Primary publication slots</small></div></div>
+            <div class="slot-chips" id="posterSlotChips"></div>
+          </div>
+          <div class="slot-guide-group">
+            <div class="slot-guide-label"><span class="type-icon video-icon">▶</span><div><strong>Videos / Short-form</strong><small>Video publication slots</small></div></div>
+            <div class="slot-chips" id="videoSlotChips"></div>
+          </div>
+        </section>
+
+        <section class="legend-panel">
+          <div class="legend-group"><p class="legend-title">Status</p><div class="legend-items"><span><i class="dot idea-dot"></i> Idea</span><span><i class="dot created-dot"></i> Created</span><span><i class="dot scheduled-dot"></i> Scheduled</span><span><i class="dot posted-dot"></i> Posted</span></div></div>
+          <div class="legend-group"><p class="legend-title">Category</p><div class="legend-items"><span><i class="category-box osc-box"></i> OSC Post</span><span><i class="category-box request-box"></i> Requests</span><span><i class="category-box holiday-box"></i> Holidays</span></div></div>
+        </section>
+        <p class="copy-drag-help">Drag to move · Hold <kbd>Shift</kbd> while dragging to copy a card to another date or slot.</p>
+
+        <section id="monthlyPanel" class="calendar-panel hidden">
+          <div class="weekdays"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+          <div id="monthlyGrid" class="calendar-grid"></div>
+        </section>
+
+        <section id="weeklyPanel" class="weekly-panel hidden" aria-label="Weekly time slot planner">
+          <div class="weekly-scroll"><div id="weeklyGrid" class="weekly-grid"></div></div>
+          <p class="drag-help">Drag to move. Hold Shift while dragging to copy a card to another date and slot.</p>
+        </section>
+
+        <section id="dailyPanel" class="daily-panel hidden" aria-label="Daily time slot planner">
+          <div id="dailyHeader" class="daily-header"></div>
+          <div id="dailyGrid" class="daily-grid"></div>
+          <p class="drag-help">Day view shows each publication slot in detail. Drag to move, or Shift + drag to copy.</p>
+        </section>
+
+        <section id="plannerEmpty" class="planner-empty hidden">
+          <div class="empty-icon">＋</div><h3>No posts in this view</h3><p>Create a post or adjust the active filters.</p><button id="emptyNewPostButton" class="new-post-btn" type="button">Create a post</button>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <span>Panpacific University Content Planner</span><span>Version <strong data-app-version>2.0.2</strong></span><span id="syncStatus">Preparing sync…</span>
+      </footer>
+    </div>
+
+    <div id="floatingDateTime" class="floating-datetime" aria-live="polite"><div id="floatingTime" class="floating-time">--:--:--</div><div id="floatingDate" class="floating-date">Loading date</div></div>
+    <button id="changelogButton" class="floating-action changelog-action" type="button" aria-label="View changelog" title="View changelog">ⓘ</button>
+    <button id="refreshButton" class="floating-action refresh-action" type="button" aria-label="Refresh planner" title="Refresh planner">↻</button>
+  </section>
+
+  <div id="postModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="postModalTitle">
+    <div class="modal-card modal-card-wide">
+      <div class="modal-header"><div><p class="eyebrow">Content item</p><h3 id="postModalTitle">Create post</h3><p id="postModalDateLabel" class="modal-subtitle">Select a date</p></div><button id="closePostModal" class="close-btn" type="button" aria-label="Close">×</button></div>
+      <form id="postForm" class="modal-form">
+        <input id="postId" type="hidden" />
+        <label>Post title<input id="postTitle" type="text" maxlength="180" placeholder="Example: Enrollment reminder" required /></label>
         <div class="form-row">
-          <label>Content Type<select id="postContentType"><option value="poster">Poster / Photo</option><option value="video">Video / Short-form</option></select></label>
-          <label>Posting Time<select id="postTime" required></select></label>
+          <label>Publication channel<select id="postChannel" required></select></label>
+          <label>Platform<select id="postPlatform"><option>Facebook</option><option>Instagram</option><option>TikTok</option><option>LinkedIn</option><option>YouTube</option><option>Multiple</option><option>General</option></select></label>
         </div>
         <div class="form-row">
-          <label>Category<select id="postCategory"><option value="OSC Post">OSC Post</option><option value="Requests">Requests</option><option value="Holidays">Holidays</option></select></label>
-          <label>Status<select id="postStatus"><option value="Idea">Idea</option><option value="Scheduled">Scheduled</option><option value="Posted">Posted</option></select></label>
+          <label>Content type<select id="postContentType"><option value="poster">Poster / Photo</option><option value="video">Video / Short-form</option></select></label>
+          <label>Posting time<select id="postTime" required></select></label>
         </div>
-        <div class="modal-actions">
-          <button type="button" class="delete-btn hidden" id="deletePost">Delete</button>
-          <button type="submit" class="save-btn" id="savePostButton">Save Card</button>
+        <div class="form-row">
+          <label>Post date<input id="postDate" type="date" required /></label>
+          <label>Status<select id="postStatus"><option value="idea">Idea</option><option value="created">Created</option><option value="scheduled">Scheduled</option><option value="posted">Posted</option></select></label>
         </div>
+        <label>Category<select id="postCategory"><option>OSC Post</option><option>Requests</option><option>Holidays</option></select></label>
+        <label>Caption or content draft<textarea id="postCaption" rows="5" placeholder="Write the hook, caption, or content direction…"></textarea></label>
+        <label>Internal notes<textarea id="postNotes" rows="3" placeholder="Assets, links, approvals, reminders…"></textarea></label>
+        <div class="modal-actions"><div class="modal-actions-left"><button id="deletePostButton" class="delete-btn hidden" type="button">Delete post</button><button id="duplicatePostButton" class="secondary-btn hidden" type="button">Duplicate</button></div><div class="modal-actions-right"><button id="cancelPostButton" class="secondary-btn" type="button">Cancel</button><button id="savePostButton" class="save-btn" type="submit">Save post</button></div></div>
       </form>
     </div>
   </div>
 
-  <div class="modal hidden" id="changelogModal" role="dialog" aria-modal="true" aria-labelledby="changelogTitle">
-    <div class="modal-card changelog-card">
-      <div class="modal-header">
-        <div><p class="eyebrow">Website Updates</p><h3 id="changelogTitle">Change Log</h3></div>
-        <button class="close-btn" id="closeChangelog" type="button" aria-label="Close">×</button>
+  <div id="channelsModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="channelsModalTitle">
+    <div class="modal-card modal-card-wide">
+      <div class="modal-header"><div><p class="eyebrow">Workspace setup</p><h3 id="channelsModalTitle">Publication channels</h3><p class="modal-subtitle">Organize university pages and platforms.</p></div><button id="closeChannelsModal" class="close-btn" type="button">×</button></div>
+      <div class="channel-manager-layout">
+        <div><p class="section-label">Active channels</p><div id="channelManagerList" class="channel-manager-list"></div></div>
+        <form id="channelForm" class="modal-form channel-form">
+          <input id="channelId" type="hidden" />
+          <div><p class="section-label" id="channelFormLabel">Add channel</p><h4 id="channelFormTitle">New publication channel</h4></div>
+          <label>Channel name<input id="channelName" type="text" maxlength="100" placeholder="Panpacific University Main" required /></label>
+          <label>Primary platform<select id="channelPlatform"><option>Facebook</option><option>Instagram</option><option>TikTok</option><option>LinkedIn</option><option>YouTube</option><option>General</option></select></label>
+          <label>Accent color<input id="channelColor" type="color" value="#0057b8" /></label>
+          <div class="modal-actions"><button id="archiveChannelButton" class="delete-btn hidden" type="button">Archive</button><div class="modal-actions-right"><button id="resetChannelButton" class="secondary-btn" type="button">Clear</button><button id="saveChannelButton" class="save-btn" type="submit">Save channel</button></div></div>
+        </form>
       </div>
+    </div>
+  </div>
+
+  <div id="accountModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="accountModalTitle">
+    <div class="modal-card">
+      <div class="modal-header"><div><p class="eyebrow">Account settings</p><h3 id="accountModalTitle">Your planner account</h3></div><button id="closeAccountModal" class="close-btn" type="button">×</button></div>
+      <form id="profileForm" class="modal-form">
+        <div class="profile-summary"><span id="profileAvatar" class="profile-avatar">U</span><div><strong id="profileEmail">user@example.com</strong><span id="profileRole">Editor access</span></div></div>
+        <label>Display name<input id="profileName" type="text" maxlength="100" required /></label>
+        <label>Workspace name<input id="profileWorkspaceName" type="text" maxlength="120" required /></label>
+        <p id="viewerNotice" class="viewer-notice hidden">Your account has view-only access. Contact an administrator to change your role.</p>
+        <div class="modal-actions split-actions"><button id="signOutButton" class="delete-btn subtle-danger" type="button">Sign out</button><button id="saveProfileButton" class="save-btn" type="submit">Save changes</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="changelogModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="changelogModalTitle">
+    <div class="modal-card changelog-card">
+      <div class="modal-header"><div><p class="eyebrow">Website updates</p><h3 id="changelogModalTitle">Change Log</h3></div><button id="closeChangelogModal" class="close-btn" type="button">×</button></div>
       <div id="changelogContent" class="changelog-content"></div>
     </div>
   </div>
 
   <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 
-  <footer class="app-footer">
-    <span>Panpacific University Content Planner</span><span id="versionText">Version</span><span id="lastRefreshText">Not refreshed yet</span>
-  </footer>
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
-  <script src="script.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="app.js"></script>
+  <script src="auth.js"></script>
 </body>
 </html>
